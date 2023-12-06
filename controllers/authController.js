@@ -23,7 +23,7 @@ const register = async (req, res) => {
       return res.status(500).json({ error: "User creation failed" }); // Handle user creation failure
     }
     const token = generateToken(user._id);
-    res.json({ token });
+    res.json({ name, email, token });
   } catch (err) {
     res.status(500).json({ error: "Registration failed" });
   }
@@ -42,7 +42,7 @@ const login = async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
 
     const token = generateToken(user._id);
-    res.json({ token });
+    res.json({ name: user.name, email: user.email, token });
   } catch (err) {
     res.status(500).json({ error: "Login failed" });
   }
