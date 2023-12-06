@@ -42,10 +42,27 @@ const login = async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
 
     const token = generateToken(user._id);
-    res.json({ name: user.name, email: user.email, token });
+    res.json({ id: user._id, name: user.name, email: user.email, token });
   } catch (err) {
     res.status(500).json({ error: "Login failed" });
   }
 };
 
-module.exports = { register, login };
+const getUserById = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    // Find the user by ID in the database
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // If user found, send the user details in the response
+    res.json({ id: user._id, name: user.name, email: user.email });
+  } catch (err) {
+    res.status(500).json({ error: "Error fetching user details" });
+  }
+};
+
+module.exports = { register, login, getUserById };

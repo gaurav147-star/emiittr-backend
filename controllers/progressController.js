@@ -2,9 +2,24 @@ const Progress = require("../models/progressModel");
 const Exercise = require("../models/exerciseModel");
 
 // Get user progress
+const getAll = async (req, res) => {
+  try {
+    const allProgress = await Progress.findOne();
+    res.json(allProgress);
+  } catch (err) {
+    res.status(500).json({
+      error: "Error fetching all user progress",
+      details: err.message,
+    });
+  }
+};
+
 const getUserProgress = async (req, res) => {
   try {
     const { userId } = req.params;
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
     const userProgress = await Progress.find({ userId });
     res.json(userProgress);
   } catch (err) {
@@ -75,8 +90,6 @@ exports.getUserExerciseProgress = async (req, res) => {
 
 module.exports = {
   getUserProgress,
+  getAll,
   updateUserProgress,
-  // resetUserProgress,
-  // getUserExerciseProgress,
-  // Other exported functions...
 };
