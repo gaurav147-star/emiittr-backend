@@ -4,7 +4,7 @@ const Exercise = require("../models/exerciseModel");
 // Get user progress
 const getAll = async (req, res) => {
   try {
-    const allProgress = await Progress.findOne();
+    const allProgress = await Progress.find();
     res.json(allProgress);
   } catch (err) {
     res.status(500).json({
